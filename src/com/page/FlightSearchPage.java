@@ -21,6 +21,10 @@ public class FlightSearchPage {
 	private WebElement cbxFlightType;
 	private WebElement btnFlightSearch;
 
+	private String flightSearchPageParMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > a";
+	private String flightSearchPageSubMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > ul > li:nth-child(1) > a";
+	private String searchBoxTitle = "Thông tin tra cứu";
+	private String searchBoxTitleElementId = "div#Search > fieldset > legend > span > b";
 	private String flightDateId = "ctl00_PlaceHolderMain_ucHCFCImport_dtCREATED_DATE";
 	private String airlineCodeId = "ctl00_PlaceHolderMain_ucHCFCImport_txtAirlines";
 	private String airlineNameId = "ctl00_PlaceHolderMain_ucHCFCImport_ddlAirlines";
@@ -107,6 +111,22 @@ public class FlightSearchPage {
 		selectByValue.selectByValue(flightTypeValue);
 		cbxFlightType.sendKeys(Keys.TAB);
 		Thread.sleep(2000);
+	}
+
+	public String getFlightSearchPageParMenuId() {
+		return flightSearchPageParMenuId;
+	}
+
+	public String getFlightSearchPageSubMenuId() {
+		return flightSearchPageSubMenuId;
+	}
+
+	public String getSearchBoxTitleElementId() {
+		return searchBoxTitleElementId;
+	}
+	
+	public String getSearchBoxTitle(){
+		return searchBoxTitle;
 	}
 
 	public void clickSearchButton() {

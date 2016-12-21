@@ -1,10 +1,14 @@
-package Util;
+package util;
+
+import java.io.IOException;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
-
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class PageUtil {
 	private static WebDriver driver;
@@ -13,10 +17,29 @@ public class PageUtil {
 		PageUtil.driver = driver;
 	}
 
+	public static WebDriver openBrowser() throws InterruptedException, IOException {
+		if (PropertiesStore.getProperty("browser").equals("chrome")) {
+			System.setProperty("webdriver.chrome.driver", PropertiesStore.getProperty("chrome_path"));
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--no-sandbox");
+			DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+			capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+			WebDriver driver = new ChromeDriver(capabilities);
+
+			driver.get(PropertiesStore.getProperty("url"));
+			driver.manage().window().maximize();
+			return driver;
+		}
+
+		else {
+			System.out.println("Cannot open browser!");
+			return null;
+		}
+	}
+
 	public void clickMenu(String menuId) throws InterruptedException {
 		WebElement ParentMenu = driver.findElement(By.cssSelector(menuId));
 		ParentMenu.click();
-		Thread.sleep(2000);
 	}
 
 	public void clickMenu(String parMenuId, String subMenuId) throws InterruptedException {
@@ -24,12 +47,12 @@ public class PageUtil {
 
 		Actions action = new Actions(driver);
 		action.moveToElement(ParentMenu).build().perform();
-		Thread.sleep(1000);
+		
+		WaitFor waitFor = new WaitFor(driver);
+		waitFor.presenceOfTheElement(By.cssSelector(subMenuId));
 
 		WebElement SubMenu = driver.findElement(By.cssSelector(subMenuId));
 		SubMenu.click();
-
-		Thread.sleep(2000);
 	}
 
 	public int isClickMenuSuccess(String compareText, String elementId) {

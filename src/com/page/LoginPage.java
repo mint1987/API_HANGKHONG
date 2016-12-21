@@ -10,12 +10,12 @@ public class LoginPage {
 	private WebElement txtUsername;
 	private WebElement txtPassword;
 	private WebElement btnLogin;
-	private WebElement titAccountInformation;
+	private WebElement lblAccountInformation;
 
 	private String usernameId = "ctl00_PlaceHolderMain_ucLogin_CustomLogin_UserName";
 	private String passwordId = "ctl00_PlaceHolderMain_ucLogin_CustomLogin_Password";
 	private String loginButtonId = "ctl00_ctl27_wPshipList_ctl00_lblRefresh";
-	private String accountInformationId = "ctl00_PlaceHolderMain_ucLogin_lblProfileNew";
+	private String accountInforElementId = "ctl00_PlaceHolderMain_ucLogin_lblProfileNew";
 
 	public LoginPage(WebDriver driver) {
 		this.driver = driver;
@@ -39,8 +39,20 @@ public class LoginPage {
 	}
 
 	public String getAccountInformationDetail() {
-		titAccountInformation = driver.findElement(By.id(accountInformationId));
-		String accountInformationDetail = titAccountInformation.getText().trim();
+		lblAccountInformation = driver.findElement(By.id(accountInforElementId));
+		String accountInformationDetail = lblAccountInformation.getText().trim();
 		return accountInformationDetail;
+	}
+
+	public String getAccountInforElementId() {
+		return accountInforElementId;
+	}
+
+	public String getusernameElementId() {
+		return usernameId;
+	}
+
+	public String getpasswordElementId() {
+		return passwordId;
 	}
 }

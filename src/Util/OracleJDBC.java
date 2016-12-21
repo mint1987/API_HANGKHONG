@@ -1,10 +1,12 @@
-package Util;
+package util;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import com.detail.FlightSearchDetail;
 
 public class OracleJDBC {
 
@@ -42,11 +44,18 @@ public class OracleJDBC {
 
 	}
 
-	public void selectRecordsFromDbFlightTable(String flightDate, String airlinesCode, String flightNumber,
-			String departureCode, String destinationCode, String gate, String flightType) throws SQLException {
+	public void selectRecordsFromDbFlightTable(FlightSearchDetail flightSearchDetail) throws SQLException {
 
 		Connection dbConnection = null;
 		Statement statement = null;
+		
+		String flightDate = flightSearchDetail.getFlightDate();
+		String airlinesCode = flightSearchDetail.getAirlinesCode();
+		String flightNumber = flightSearchDetail.getFlightNumber();
+		String departureCode = flightSearchDetail.getDepartureCode();
+		String destinationCode = flightSearchDetail.getDestinationCode();
+		String gate = flightSearchDetail.getGate();
+		String flightType = flightSearchDetail.getFlightType();
 
 		String selectTableSQL = "SELECT * " + "FROM TBDCHUYENBAY "
 				+ "WHERE TO_DATE(FI_NGAYBAY, 'dd-MON-yy') = TO_DATE('" + flightDate + "', 'dd/mm/yyyy') "

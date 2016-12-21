@@ -2,12 +2,15 @@ package com.event;
 
 import java.sql.SQLException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 import com.detail.FlightSearchDetail;
 import com.page.FlightSearchPage;
 
-import Util.OracleJDBC;
+import util.OracleJDBC;
+import util.PageUtil;
+import util.WaitFor;
 
 public class FlightSearchEvent {
 	private WebDriver driver;
@@ -18,6 +21,16 @@ public class FlightSearchEvent {
 		this.driver = driver;
 		this.flightSearchDetail = flightSearchDetail;
 		this.flightSearchPage = new FlightSearchPage(driver);
+	}
+
+	public void openFlightSearchPage() throws InterruptedException {
+		PageUtil pageUtil = new PageUtil(driver);
+		pageUtil.clickMenu(flightSearchPage.getFlightSearchPageParMenuId(), flightSearchPage.getFlightSearchPageSubMenuId());
+		
+		WaitFor waitFor = new WaitFor(driver);
+		waitFor.presenceOfTheElement(By.id(flightSearchPage.getSearchBoxTitleElementId()));
+		
+		pageUtil.isClickMenuSuccess(flightSearchPage.getSearchBoxTitle(), flightSearchPage.getSearchBoxTitleElementId());
 	}
 
 	public void Search() throws InterruptedException {
@@ -39,10 +52,7 @@ public class FlightSearchEvent {
 		OracleJDBC connectDB = new OracleJDBC();
 
 		try {
-			connectDB.selectRecordsFromDbFlightTable(flightSearchDetail.getFlightDate(),
-					flightSearchDetail.getAirlinesCode(), flightSearchDetail.getFlightNumber(),
-					flightSearchDetail.getDepartureCode(), flightSearchDetail.getDepartureCode(),
-					flightSearchDetail.getGate(), flightSearchDetail.getFlightType());
+			connectDB.selectRecordsFromDbFlightTable(flightSearchDetail);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
