@@ -6,8 +6,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import util.PageUtil;
+import util.WaitFor;
+
 public class FlightSearchPage {
 	WebDriver driver;
+	private PageUtil pageUtil;
+	private WaitFor waitFor;
 
 	private WebElement dtpFlightDate;
 	private WebElement txtAirlinesCode;
@@ -23,8 +28,10 @@ public class FlightSearchPage {
 
 	private String flightSearchPageParMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > a";
 	private String flightSearchPageSubMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > ul > li:nth-child(1) > a";
+	
 	private String searchBoxTitle = "Thông tin tra cứu";
 	private String searchBoxTitleElementCss = "div#Search > fieldset > legend > span > b";
+	
 	private String flightDateId = "ctl00_PlaceHolderMain_ucHCFCImport_dtCREATED_DATE";
 	private String airlineCodeId = "ctl00_PlaceHolderMain_ucHCFCImport_txtAirlines";
 	private String airlineNameId = "ctl00_PlaceHolderMain_ucHCFCImport_ddlAirlines";
@@ -36,9 +43,14 @@ public class FlightSearchPage {
 	private String gateId = "ctl00_PlaceHolderMain_ucHCFCImport_txtGate";
 	private String flightTypeId = "ctl00_PlaceHolderMain_ucHCFCImport_ddlFlightType";
 	private String searchButtonId = "ctl00_PlaceHolderMain_ucHCFCImport_btnSearch";
+	
+	private String noResultFoundGridPagerId = "#ctl00_PlaceHolderMain_ucHCFCImport_gvListFlight > tbody > .GridPager:nth-child(1)";
+	private String noResultFoundNotify = "Không có bản ghi nào";
 
 	public FlightSearchPage(WebDriver driver) {
 		this.driver = driver;
+		pageUtil = new PageUtil(driver);
+		waitFor = new WaitFor(driver);
 	}
 
 	public void enterFlightDate(String flightDate) {
@@ -113,24 +125,24 @@ public class FlightSearchPage {
 		Thread.sleep(2000);
 	}
 
-	public String getFlightSearchPageParMenuId() {
-		return flightSearchPageParMenuId;
-	}
-
-	public String getFlightSearchPageSubMenuId() {
-		return flightSearchPageSubMenuId;
-	}
-
-	public String getSearchBoxTitleElementCss() {
-		return searchBoxTitleElementCss;
-	}
-	
-	public String getSearchBoxTitle(){
-		return searchBoxTitle;
-	}
-
 	public void clickSearchButton() {
 		btnFlightSearch = driver.findElement(By.id(searchButtonId));
 		btnFlightSearch.click();
+	}
+	
+	public void clickFlightListMenu() throws InterruptedException{
+		pageUtil.clickMenu(flightSearchPageParMenuId, flightSearchPageSubMenuId);
+	}
+	
+	public void waitForFlightList(){
+		waitFor.presenceOfTheElement(By.cssSelector(searchBoxTitleElementCss));
+	}
+	
+	public void isClickFlightListMenuSuccess(){
+		pageUtil.isClickMenuSuccess(searchBoxTitle, searchBoxTitleElementCss);
+	}
+	
+	public void verifyFlightResult(){
+		pageUtil.isResultValid(noResultFoundNotify, noResultFoundGridPagerId);
 	}
 }
