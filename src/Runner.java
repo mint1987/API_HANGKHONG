@@ -1,6 +1,9 @@
 import java.io.IOException;
 import org.openqa.selenium.WebDriver;
+
+import com.detail.FlightSearchDetail;
 import com.detail.LoginDetail;
+import com.event.FlightSearchEvent;
 import com.event.LoginEvent;
 
 import util.PageUtil;
@@ -21,14 +24,22 @@ public class Runner {
 		loginEvent.waitForAccountNameAppear();
 		loginEvent.isLoginSuccess(loginDetail.getUserName());
 
-//		FlightSearchDetail flightSearchDetail = new FlightSearchDetail();
-//		FlightSearchEvent flightSearchEvent = new FlightSearchEvent(driver, flightSearchDetail);
-//		flightSearchEvent.openFlightSearchPage();
+		FlightSearchDetail flightSearchDetail = new FlightSearchDetail();
+		FlightSearchEvent flightSearchEvent = new FlightSearchEvent(driver, flightSearchDetail);
+		flightSearchEvent.openFlightSearchPage();
 //		flightSearchDetail.setFlightDate("07/12/2016");
 //		flightSearchDetail.setAirlinesCode("VN");
-//		flightSearchDetail.setDepartureCode("ICN");
-//		flightSearchDetail.setDestinationCode("HAN");
+//		flightSearchDetail.setFlightNumber("036");
+//		flightSearchDetail.setDepartureCode("HAN");
+//		flightSearchDetail.setDestinationCode("MOW");
+//		flightSearchDetail.setGate("6");
+//		flightSearchDetail.setFlightType("");
 //
 //		flightSearchEvent.Search();
+//		flightSearchEvent.getFlightsListFromDB();
+		
+		flightSearchDetail.setFlightDate("30/02/2016");
+		flightSearchEvent.invalidFlightDate_noDataFound();
+		
 	}
 }

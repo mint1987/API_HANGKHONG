@@ -7,8 +7,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.safari.SafariDriver;
 
 public class PageUtil {
 	private static WebDriver driver;
@@ -18,7 +21,8 @@ public class PageUtil {
 	}
 
 	public static WebDriver openBrowser() throws InterruptedException, IOException {
-		if (PropertiesStore.getProperty("browser").equals("chrome")) {
+		String browser = PropertiesStore.getProperty("browser");
+		if (browser.equals("chrome")) {
 			System.setProperty("webdriver.chrome.driver", PropertiesStore.getProperty("chrome_path"));
 			ChromeOptions options = new ChromeOptions();
 			options.addArguments("--no-sandbox");
@@ -29,9 +33,16 @@ public class PageUtil {
 			driver.get(PropertiesStore.getProperty("url"));
 			driver.manage().window().maximize();
 			return driver;
-		}
-
-		else {
+		} else if (browser.equals("iexplorer")) {
+			driver = new InternetExplorerDriver();
+			return driver;
+		} else if (browser.equals("safari")) {
+			driver = new SafariDriver();
+			return driver;
+		} else if (browser.equals("firefox")) {
+			driver = new FirefoxDriver();
+			return driver;
+		} else {
 			System.out.println("Cannot open browser!");
 			return null;
 		}
@@ -47,7 +58,7 @@ public class PageUtil {
 
 		Actions action = new Actions(driver);
 		action.moveToElement(ParentMenu).build().perform();
-		
+
 		WaitFor waitFor = new WaitFor(driver);
 		waitFor.presenceOfTheElement(By.cssSelector(subMenuId));
 
@@ -64,6 +75,18 @@ public class PageUtil {
 			return 1;
 		} else {
 			System.out.println("MenuClick: Wrong!");
+			return 0;
+		}
+	}
+	
+	public int isResultValid(String compareText, String elementId) {
+		String elementName = driver.findElement(By.cssSelector(elementId)).getText().trim();
+
+		if (compareText.toLowerCase().equals(elementName.toLowerCase())) {
+			System.out.println("Result: Exactly!");
+			return 1;
+		} else {
+			System.out.println("Result: Wrong!");
 			return 0;
 		}
 	}

@@ -16,21 +16,35 @@ public class FlightSearchEvent {
 	private WebDriver driver;
 	private FlightSearchPage flightSearchPage;
 	private FlightSearchDetail flightSearchDetail;
+	private WaitFor waitFor;
+	private PageUtil pageUtil;
 
 	public FlightSearchEvent(WebDriver driver, FlightSearchDetail flightSearchDetail) {
 		this.driver = driver;
 		this.flightSearchDetail = flightSearchDetail;
 		this.flightSearchPage = new FlightSearchPage(driver);
+		this.waitFor = new WaitFor(driver);
+		this.pageUtil = new PageUtil(driver);
 	}
 
 	public void openFlightSearchPage() throws InterruptedException {
-		PageUtil pageUtil = new PageUtil(driver);
-		pageUtil.clickMenu(flightSearchPage.getFlightSearchPageParMenuId(), flightSearchPage.getFlightSearchPageSubMenuId());
+		pageUtil.clickMenu(flightSearchPage.getFlightSearchPageParMenuId(),
+				flightSearchPage.getFlightSearchPageSubMenuId());
 		
-		WaitFor waitFor = new WaitFor(driver);
-		waitFor.presenceOfTheElement(By.id(flightSearchPage.getSearchBoxTitleElementId()));
+		waitFor.presenceOfTheElement(By.cssSelector(flightSearchPage.getSearchBoxTitleElementCss()));
 		
-		pageUtil.isClickMenuSuccess(flightSearchPage.getSearchBoxTitle(), flightSearchPage.getSearchBoxTitleElementId());
+		pageUtil.isClickMenuSuccess(flightSearchPage.getSearchBoxTitle(),
+				flightSearchPage.getSearchBoxTitleElementCss());
+	}
+	
+	public void invalidFlightDate_noDataFound() throws InterruptedException{
+		flightSearchPage.enterFlightDate(flightSearchDetail.getFlightDate());
+		flightSearchPage.clickSearchButton();
+		Thread.sleep(2000);
+		String elementId = "#ctl00_PlaceHolderMain_ucHCFCImport_gvListFlight > tbody > .GridPager:nth-child(1)";
+		String compareText = "Không có bản ghi nào";
+		
+		pageUtil.isResultValid(compareText, elementId);
 	}
 
 	public void Search() throws InterruptedException {
@@ -57,5 +71,4 @@ public class FlightSearchEvent {
 			System.out.println(e.getMessage());
 		}
 	}
-
 }

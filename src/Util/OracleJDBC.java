@@ -48,7 +48,7 @@ public class OracleJDBC {
 
 		Connection dbConnection = null;
 		Statement statement = null;
-		
+
 		String flightDate = flightSearchDetail.getFlightDate();
 		String airlinesCode = flightSearchDetail.getAirlinesCode();
 		String flightNumber = flightSearchDetail.getFlightNumber();
@@ -57,11 +57,21 @@ public class OracleJDBC {
 		String gate = flightSearchDetail.getGate();
 		String flightType = flightSearchDetail.getFlightType();
 
+		// String selectTableSQL = "SELECT * " + "FROM TBDCHUYENBAY "
+		// + "WHERE TO_DATE(FI_NGAYBAY, 'dd-MON-yy') = TO_DATE('" + flightDate +
+		// "', 'dd/mm/yyyy') "
+		// + "AND FI_MAHANGHANGKHONG = '" + airlinesCode + "' AND FI_SOCHUYENBAY
+		// LIKE '%" + flightNumber
+		// + "%' AND FI_MACANGHANGKHONGDI = '" + departureCode + "' AND
+		// FI_MACANGHANGKHONGDEN = '"
+		// + destinationCode + "' AND FI_CUA = '" + gate + "' AND FI_LOAIDIDEN =
+		// " + flightType;
+		//
 		String selectTableSQL = "SELECT * " + "FROM TBDCHUYENBAY "
 				+ "WHERE TO_DATE(FI_NGAYBAY, 'dd-MON-yy') = TO_DATE('" + flightDate + "', 'dd/mm/yyyy') "
-				+ "AND FI_MAHANGHANGKHONG = '" + airlinesCode + "' AND FI_SOCHUYENBAY LIKE '%" + flightNumber
+				+ "AND FI_MAHANGHANGKHONG = '" + airlinesCode + "'AND FI_SOCHUYENBAY LIKE '%" + flightNumber
 				+ "%' AND FI_MACANGHANGKHONGDI = '" + departureCode + "' AND FI_MACANGHANGKHONGDEN = '"
-				+ destinationCode + "' AND FI_CUA = '" + gate + "' AND FI_LOAIDIDEN = '" + flightType + "';";
+				+ destinationCode + "' AND FI_CUA = " + gate + " AND FI_LOAIDIDEN = " + 0;
 
 		try {
 
@@ -74,7 +84,6 @@ public class OracleJDBC {
 			ResultSet rs = statement.executeQuery(selectTableSQL);
 
 			while (rs.next()) {
-
 				String ngaybay = rs.getString("FI_NGAYBAY");
 				String mahanghangkhong = rs.getString("FI_MAHANGHANGKHONG");
 				String tenhanghangkhong = rs.getString("FI_TENHANGHANGKHONG");
@@ -82,7 +91,6 @@ public class OracleJDBC {
 				System.out.println("ngaybay: " + ngaybay);
 				System.out.println("mahanghangkhong: " + mahanghangkhong);
 				System.out.println("tenhanghangkhong: " + tenhanghangkhong);
-
 			}
 
 		} catch (SQLException e) {

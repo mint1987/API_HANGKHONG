@@ -24,7 +24,7 @@ public class FlightSearchPage {
 	private String flightSearchPageParMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > a";
 	private String flightSearchPageSubMenuId = "div#wrapper2 > ul#nav > li:nth-child(13) > ul > li:nth-child(1) > a";
 	private String searchBoxTitle = "Thông tin tra cứu";
-	private String searchBoxTitleElementId = "div#Search > fieldset > legend > span > b";
+	private String searchBoxTitleElementCss = "div#Search > fieldset > legend > span > b";
 	private String flightDateId = "ctl00_PlaceHolderMain_ucHCFCImport_dtCREATED_DATE";
 	private String airlineCodeId = "ctl00_PlaceHolderMain_ucHCFCImport_txtAirlines";
 	private String airlineNameId = "ctl00_PlaceHolderMain_ucHCFCImport_ddlAirlines";
@@ -121,8 +121,8 @@ public class FlightSearchPage {
 		return flightSearchPageSubMenuId;
 	}
 
-	public String getSearchBoxTitleElementId() {
-		return searchBoxTitleElementId;
+	public String getSearchBoxTitleElementCss() {
+		return searchBoxTitleElementCss;
 	}
 	
 	public String getSearchBoxTitle(){
